@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Compare - Dark Patterns Tracker</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f5f4f8; margin: 0; padding: 30px; }
+        h1 { color: #2B2540; }
+        .back { color: #7F77DD; text-decoration: none; font-size: 14px; }
+        .subtitle { color: #888; font-size: 14px; margin-bottom: 24px; }
+        .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 900px; }
+        .panel { border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+        .panel-head { padding: 12px 16px; font-weight: bold; font-size: 14px; }
+        .bad .panel-head { background: #FAECE7; color: #712B13; }
+        .good .panel-head { background: #EAF3DE; color: #27500A; }
+        .panel-body { background: white; padding: 20px; }
+        .mock { background: #f9f9fb; border-radius: 8px; padding: 16px; font-size: 13px; }
+        .big-btn { width: 100%; padding: 10px; background: #7F77DD; color: white; border: none; border-radius: 6px; font-size: 13px; cursor: pointer; margin-bottom: 6px; }
+        .small-link { display: block; text-align: center; font-size: 11px; color: #aaa; text-decoration: underline; cursor: pointer; }
+        .opt-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid #eee; }
+        .toggle { width: 36px; height: 20px; background: #1D9E75; border-radius: 10px; }
+        .toggle.off { background: #ccc; }
+        .btn-row { display: flex; gap: 8px; margin-top: 10px; }
+        .btn-row button { flex: 1; padding: 8px; border-radius: 6px; font-size: 12px; cursor: pointer; border: none; }
+        .btn-accept { background: #1D9E75; color: white; }
+        .btn-save { background: white; border: 1px solid #ccc; }
+        .notes { margin-top: 14px; font-size: 12px; color: #666; line-height: 1.7; background: #f9f9fb; padding: 12px; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <a href="/cases" class="back">&larr; Back to Case Library</a>
+    <h1>Deceptive vs Ethical Design</h1>
+    <p class="subtitle">The same cookie consent dialog, designed two different ways.</p>
+
+    <div class="compare-grid">
+        <!-- Deceptive -->
+        <div class="panel bad">
+            <div class="panel-head">⚠ Deceptive Design</div>
+            <div class="panel-body">
+                <div class="mock">
+                    <p style="margin-top:0;">We use cookies to improve your experience.</p>
+                    <button class="big-btn">✓ Accept All Cookies</button>
+                    <span class="small-link">Manage preferences (may affect site experience)</span>
+                </div>
+                <div class="notes">
+                    1. Accept button is large and colorful; reject is hidden as a tiny link.<br>
+                    2. Wording implies rejecting will "affect experience" to scare users.<br>
+                    3. No granular control - all or nothing.
+                </div>
+            </div>
+        </div>
+
+        <!-- Ethical -->
+        <div class="panel good">
+            <div class="panel-head">✓ Ethical Design</div>
+            <div class="panel-body">
+                <div class="mock">
+                    <p style="margin-top:0;">We use cookies. You can choose which to allow.</p>
+                    <div class="opt-row"><span>Essential</span><div class="toggle"></div></div>
+                    <div class="opt-row"><span>Analytics</span><div class="toggle off"></div></div>
+                    <div class="opt-row" style="border:none;"><span>Marketing</span><div class="toggle off"></div></div>
+                    <div class="btn-row">
+                        <button class="btn-save">Save Choices</button>
+                        <button class="btn-accept">Accept All</button>
+                    </div>
+                </div>
+                <div class="notes">
+                    1. Each cookie type can be controlled individually.<br>
+                    2. Both buttons have equal visual weight - respects user choice.<br>
+                    3. Transparent about why essential cookies stay on.
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

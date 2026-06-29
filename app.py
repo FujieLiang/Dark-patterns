@@ -46,7 +46,7 @@ def save_image(file):
 # ---------- Public Pages ----------
 @app.route("/")
 def home():
-    return "<h1>Dark Patterns Tracker</h1><p><a href=\"/cases\">Browse Cases</a> | <a href=\"/stats\">Stats</a> | <a href=\"/register-page\">Register</a> | <a href=\"/login-page\">Login</a> | <a href=\"/admin\">Admin</a></p>"
+    return "<h1>Dark Patterns Tracker</h1><p><a href=\"/cases\">Browse Cases</a> | <a href=\"/stats\">Stats</a> | <a href=\"/compare\">Compare</a> | <a href=\"/register-page\">Register</a> | <a href=\"/login-page\">Login</a> | <a href=\"/admin\">Admin</a></p>"
 
 @app.route("/cases")
 def cases_page():
@@ -75,6 +75,9 @@ def stats():
     counts = [len(c.cases) for c in categories]
     total = Case.query.count()
     return render_template("stats.html", labels=labels, colors=colors, counts=counts, total=total)
+@app.route("/compare")
+def compare():
+    return render_template("compare.html")
 
 @app.route("/register-page")
 def register_page():
