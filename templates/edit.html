@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Case - Dark Patterns Tracker</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f5f4f8; margin: 0; padding: 30px; }
+        h1 { color: #2B2540; font-size: 20px; }
+        .card { background: white; padding: 24px; border-radius: 10px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); max-width: 600px; }
+        label { display: block; font-size: 13px; color: #555; margin: 10px 0 4px; }
+        input, textarea, select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-family: inherit; }
+        button { margin-top: 14px; padding: 10px 20px; background: #7F77DD; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; }
+        a { color: #888; font-size: 13px; margin-left: 12px; }
+    </style>
+</head>
+<body>
+    <h1>Edit Case #{{ case.id }}</h1>
+    <div class="card">
+        <form action="/admin/cases/{{ case.id }}/update" method="POST">
+            <label>Title</label>
+            <input type="text" name="title" value="{{ case.title }}" required>
+            <label>Website</label>
+            <input type="text" name="website" value="{{ case.website }}">
+            <label>Category</label>
+            <select name="category_id">
+                {% for cat in categories %}
+                <option value="{{ cat.id }}" {% if cat.id == case.category_id %}selected{% endif %}>{{ cat.name }}</option>
+                {% endfor %}
+            </select>
+            <label>Description</label>
+            <textarea name="description" rows="2">{{ case.description }}</textarea>
+            <label>Harm to User</label>
+            <textarea name="harm" rows="2">{{ case.harm }}</textarea>
+            <button type="submit">Save Changes</button>
+            <a href="/admin">Cancel</a>
+        </form>
+    </div>
+</body>
+</html>
