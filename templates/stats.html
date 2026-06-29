@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Statistics - Dark Patterns Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f5f4f8; margin: 0; padding: 30px; }
+        h1 { color: #2B2540; }
+        .back { color: #7F77DD; text-decoration: none; font-size: 14px; }
+        .stat-row { display: flex; gap: 16px; margin: 20px 0; flex-wrap: wrap; }
+        .stat { background: white; border-radius: 10px; padding: 20px 28px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); text-align: center; }
+        .stat-num { font-size: 30px; font-weight: bold; color: #7F77DD; }
+        .stat-label { font-size: 13px; color: #888; margin-top: 4px; }
+        .charts { display: flex; gap: 20px; flex-wrap: wrap; }
+        .chart-card { background: white; border-radius: 10px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+        .chart-card h3 { color: #2B2540; font-size: 15px; margin-top: 0; }
+        .bar-box { width: 480px; max-width: 90vw; }
+        .donut-box { width: 320px; max-width: 90vw; }
+    </style>
+</head>
+<body>
+    <a href="/cases" class="back">&larr; Back to Case Library</a>
+    <h1>Statistics Dashboard</h1>
+
+    <div class="stat-row">
+        <div class="stat">
+            <div class="stat-num">{{ total }}</div>
+            <div class="stat-label">Total Cases</div>
+        </div>
+        <div class="stat">
+            <div class="stat-num">{{ labels|length }}</div>
+            <div class="stat-label">Categories</div>
+        </div>
+    </div>
+
+    <div class="charts">
+        <div class="chart-card bar-box">
+            <h3>Cases per Category</h3>
+            <canvas id="barChart"></canvas>
+        </div>
+        <div class="chart-card donut-box">
+            <h3>Category Distribution</h3>
+            <canvas id="donutChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        const labels = {{ labels|tojson }};
+        const counts = {{ counts|tojson }};
+        const colors = {{ colors|tojson }};
+
+        // Bar chart
+        new Chart(document.getElementById("barChart"), {
+            type: "bar",
+            data: {
+                labels: labels,
+                datasets: [{ label: "Cases", data: counts, backgroundColor: colors }]
+            },
+            options: {
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+            }
+        });
+
+        // Donut chart
+        new Chart(document.getElementById("donutChart"), {
+            type: "doughnut",
+            data: {
+                labels: labels,
+                datasets: [{ data: counts, backgroundColor: colors }]
+            }
+        });
+    </script>
+</body>
+</html>

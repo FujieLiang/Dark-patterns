@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ case.title }} - Dark Patterns Tracker</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f5f4f8; margin: 0; padding: 30px; }
+        .back { color: #7F77DD; text-decoration: none; font-size: 14px; }
+        .card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); max-width: 700px; margin-top: 16px; }
+        .site { font-size: 13px; color: #999; }
+        h1 { color: #2B2540; font-size: 24px; margin: 6px 0 12px; }
+        .badge { padding: 4px 12px; border-radius: 99px; color: white; font-size: 13px; }
+        .detail-img { width: 100%; border-radius: 10px; margin: 20px 0; }
+        h3 { color: #2B2540; font-size: 15px; margin-bottom: 6px; }
+        p { color: #555; line-height: 1.6; }
+        .harm { background: #FAECE7; border-left: 3px solid #D85A30; padding: 14px; border-radius: 0 8px 8px 0; }
+        .harm h3 { color: #712B13; }
+        .harm p { color: #993C1D; }
+    </style>
+</head>
+<body>
+    <a href="/cases" class="back">&larr; Back to Case Library</a>
+    <div class="card">
+        <div class="site">{{ case.website }}</div>
+        <h1>{{ case.title }}</h1>
+        {% if case.category %}
+        <span class="badge" style="background: {{ case.category.color }}">{{ case.category.name }}</span>
+        {% endif %}
+
+        {% if case.image_url %}
+        <img src="/static/{{ case.image_url }}" class="detail-img">
+        {% endif %}
+
+        {% if case.description %}
+        <h3>Description</h3>
+        <p>{{ case.description }}</p>
+        {% endif %}
+
+        {% if case.harm %}
+        <div class="harm" style="margin-top:20px;">
+            <h3>Harm to User</h3>
+            <p>{{ case.harm }}</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

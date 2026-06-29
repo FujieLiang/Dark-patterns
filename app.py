@@ -34,7 +34,7 @@ class Case(db.Model):
     image_url = db.Column(db.String(255))
     category = db.relationship("Category", backref="cases")
 
-# ---------- Helper: save uploaded image ----------
+# ---------- Helper ----------
 def save_image(file):
     if file and file.filename:
         filename = secure_filename(file.filename)
@@ -43,10 +43,38 @@ def save_image(file):
         return "uploads/" + filename
     return None
 
-# ---------- Auth Pages ----------
+# ---------- Public Pages ----------
 @app.route("/")
 def home():
-    return "<h1>Dark Patterns Tracker</h1><p><a href=\"/register-page\">Register</a> | <a href=\"/login-page\">Login</a> | <a href=\"/admin\">Admin</a></p>"
+    return "<h1>Dark Patterns Tracker</h1><p><a href=\"/cases\">Browse Cases</a> | <a href=\"/stats\">Stats</a> | <a href=\"/register-page\">Register</a> | <a href=\"/login-page\">Login</a> | <a href=\"/admin\">Admin</a></p>"
+
+@app.route("/cases")
+def cases_page():
+    search = request.args.get("search", "")
+    category_id = request.args.get("category", "")
+    query = Case.query
+    if search:
+        query = query.filter(Case.title.contains(search) | Case.website.contains(search))
+    if category_id:
+        query = query.filter_by(category_id=category_id)
+    cases = query.all()
+    categories = Category.query.all()
+    return render_template("cases.html", cases=cases, categories=categories,
+                           search=search, selected_category=category_id)
+
+@app.route("/cases/<int:case_id>")
+def case_detail(case_id):
+    case = Case.query.get_or_404(case_id)
+    return render_template("case_detail.html", case=case)
+
+@app.route("/stats")
+def stats():
+    categories = Category.query.all()
+    labels = [c.name for c in categories]
+    colors = [c.color for c in categories]
+    counts = [len(c.cases) for c in categories]
+    total = Case.query.count()
+    return render_template("stats.html", labels=labels, colors=colors, counts=counts, total=total)
 
 @app.route("/register-page")
 def register_page():
@@ -63,7 +91,7 @@ def register():
     email = data.get("email")
     password = data.get("password")
     if not email or not password:
-        return jsonify({"error": "Email and password are required"}), 400
+        return jsonify({"error": "Email and password cannot be empty"}), 400
     if User.query.filter_by(email=email).first():
         return jsonify({"error": "This email is already registered"}), 400
     new_user = User(email=email, password_hash=generate_password_hash(password))
@@ -77,10 +105,10 @@ def login():
     email = data.get("email")
     password = data.get("password")
     if not email or not password:
-        return jsonify({"error": "Email and password are required"}), 400
+        return jsonify({"error": "Email and password cannot be empty"}), 400
     user = User.query.filter_by(email=email).first()
     if not user or not check_password_hash(user.password_hash, password):
-        return jsonify({"error": "Invalid email or password"}), 401
+        return jsonify({"error": "Email or password is incorrect"}), 401
     return jsonify({"message": "Login successful", "email": user.email, "role": user.role}), 200
 
 # ---------- Admin: Case CRUD ----------

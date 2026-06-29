@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Case Library - Dark Patterns Tracker</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f5f4f8; margin: 0; padding: 30px; }
+        h1 { color: #2B2540; }
+        .toolbar { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; max-width: 1000px; }
+        .search-box { flex: 1; min-width: 240px; padding: 10px 14px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; }
+        .btn { padding: 9px 16px; background: #7F77DD; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; text-decoration: none; }
+        .filters { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+        .filter-tag { padding: 6px 14px; border: 1px solid #ccc; border-radius: 99px; font-size: 13px; color: #555; text-decoration: none; background: white; }
+        .filter-tag.active { background: #EEEDFE; border-color: #AFA9EC; color: #3C3489; font-weight: bold; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; max-width: 1000px; }
+        .card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+        .card-img { height: 120px; background: #eee; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 13px; }
+        .card-img img { width: 100%; height: 100%; object-fit: cover; }
+        .card-body { padding: 12px 14px; }
+        .card-site { font-size: 12px; color: #999; }
+        .card-title { font-size: 15px; font-weight: bold; color: #2B2540; margin: 4px 0 8px; }
+        .badge { padding: 3px 10px; border-radius: 99px; color: white; font-size: 11px; }
+        .empty { color: #999; padding: 40px; text-align: center; }
+    </style>
+</head>
+<body>
+    <h1>Dark Patterns Case Library</h1>
+
+    <form class="toolbar" method="GET" action="/cases">
+        <input type="text" name="search" class="search-box" placeholder="Search by title or website..." value="{{ search }}">
+        <button type="submit" class="btn">Search</button>
+        <a href="/cases" class="btn" style="background:#999">Reset</a>
+    </form>
+
+    <div class="filters">
+        <a href="/cases" class="filter-tag {% if not selected_category %}active{% endif %}">All</a>
+        {% for cat in categories %}
+        <a href="/cases?category={{ cat.id }}" class="filter-tag {% if selected_category == cat.id|string %}active{% endif %}">{{ cat.name }}</a>
+        {% endfor %}
+    </div>
+
+    {% if cases %}
+    <div class="grid">
+        {% for case in cases %}
+        <a href="/cases/{{ case.id }}" class="card" style="text-decoration:none;">
+            <div class="card-img">
+                {% if case.image_url %}
+                <img src="/static/{{ case.image_url }}">
+                {% else %}
+                No image
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <div class="card-site">{{ case.website }}</div>
+                <div class="card-title">{{ case.title }}</div>
+                {% if case.category %}
+                <span class="badge" style="background: {{ case.category.color }}">{{ case.category.name }}</span>
+                {% endif %}
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty">No cases found. Try a different search or filter.</div>
+    {% endif %}
+</body>
+</html>
