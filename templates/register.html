@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>注册 - Dark Patterns Tracker</title>
+    <title>Register - Dark Patterns Tracker</title>
     <style>
         body { font-family: Arial, sans-serif; background: #f5f4f8; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
         .card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); width: 320px; }
@@ -17,12 +17,12 @@
 </head>
 <body>
     <div class="card">
-        <h1>创建账号</h1>
-        <input type="email" id="email" placeholder="邮箱">
-        <input type="password" id="password" placeholder="密码">
-        <button onclick="register()">注册</button>
+        <h1>Create Account</h1>
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="register()">Register</button>
         <div class="msg" id="msg"></div>
-        <div class="link"><a href="/login-page">已有账号?去登录</a></div>
+        <div class="link"><a href="/login-page">Already have an account? Login</a></div>
     </div>
     <script>
         async function register() {
@@ -37,7 +37,7 @@
             const msg = document.getElementById("msg");
             if (res.ok) {
                 msg.style.color = "green";
-                msg.textContent = data.message + "!即将跳转登录...";
+                msg.textContent = data.message + "! Redirecting to login...";
                 setTimeout(() => window.location.href = "/login-page", 1500);
             } else {
                 msg.style.color = "red";

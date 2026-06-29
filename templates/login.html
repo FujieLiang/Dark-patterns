@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>登录 - Dark Patterns Tracker</title>
+    <title>login - Dark Patterns Tracker</title>
     <style>
         body { font-family: Arial, sans-serif; background: #f5f4f8; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
         .card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); width: 320px; }
@@ -17,12 +17,12 @@
 </head>
 <body>
     <div class="card">
-        <h1>登录</h1>
-        <input type="email" id="email" placeholder="邮箱">
-        <input type="password" id="password" placeholder="密码">
-        <button onclick="login()">登录</button>
+        <h1>Login</h1>
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Login</button>
         <div class="msg" id="msg"></div>
-        <div class="link"><a href="/register-page">没有账号?去注册</a></div>
+        <div class="link"><a href="/register-page">Don't have an account? Register</a></div>
     </div>
     <script>
         async function login() {
@@ -37,7 +37,7 @@
             const msg = document.getElementById("msg");
             if (res.ok) {
                 msg.style.color = "green";
-                msg.textContent = data.message + "!欢迎 " + data.email;
+                msg.textContent = data.message + "! Welcome " + data.email;
             } else {
                 msg.style.color = "red";
                 msg.textContent = data.error;
