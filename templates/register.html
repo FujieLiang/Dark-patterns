@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>注册 - Dark Patterns Tracker</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f5f4f8; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); width: 320px; }
+        h1 { font-size: 20px; color: #2B2540; margin-bottom: 24px; text-align: center; }
+        input { width: 100%; padding: 10px; margin-bottom: 14px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        button { width: 100%; padding: 11px; background: #7F77DD; color: white; border: none; border-radius: 6px; font-size: 15px; cursor: pointer; }
+        button:hover { background: #6a62c4; }
+        .msg { text-align: center; margin-top: 14px; font-size: 14px; }
+        .link { text-align: center; margin-top: 16px; font-size: 13px; }
+        a { color: #7F77DD; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>创建账号</h1>
+        <input type="email" id="email" placeholder="邮箱">
+        <input type="password" id="password" placeholder="密码">
+        <button onclick="register()">注册</button>
+        <div class="msg" id="msg"></div>
+        <div class="link"><a href="/login-page">已有账号?去登录</a></div>
+    </div>
+    <script>
+        async function register() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const res = await fetch("/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await res.json();
+            const msg = document.getElementById("msg");
+            if (res.ok) {
+                msg.style.color = "green";
+                msg.textContent = data.message + "!即将跳转登录...";
+                setTimeout(() => window.location.href = "/login-page", 1500);
+            } else {
+                msg.style.color = "red";
+                msg.textContent = data.error;
+            }
+        }
+    </script>
+</body>
+</html>
